@@ -73,7 +73,11 @@ Here is an example full configuration of the ContentSecurityPolicyFilter.
            <init-param>
                <param-name>frame-src</param-name>
                <param-value>'self'</param-value>
-            </init-param> 
+            </init-param>
+            <init-param>
+               <param-name>frame-ancestors</param-name>
+               <param-value>'none'</param-value>
+            </init-param>  
         </filter>
         
         <filter-mapping> 
