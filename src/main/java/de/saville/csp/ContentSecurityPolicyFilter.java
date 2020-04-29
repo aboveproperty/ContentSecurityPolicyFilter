@@ -84,6 +84,10 @@ import org.slf4j.LoggerFactory;
  *                <param-name>frame-src</param-name>
  *                <param-value>'self'</param-value>
  *             </init-param>
+ *             <init-param>
+ *                <param-name>frame-ancestors</param-name>
+ *                <param-value>'none'</param-value>
+ *             </init-param>
  *         </filter>
  *
  *         <filter-mapping>
@@ -127,6 +131,8 @@ public class ContentSecurityPolicyFilter implements Filter {
     public static final String MEDIA_SRC = "media-src";
     /** Defines valid sources for loading frames */
     public static final String FRAME_SRC = "frame-src";
+    /** Defines valid parents that may embed a page using <frame>, <iframe>, <object>, <embed>, or <applet>.  */
+    public static final String FRAME_ANCESTORS = "frame-ancestors";
 
     public static final String KEYWORD_NONE = "'none'";
     public static final String KEYWORD_SELF = "'self'";
@@ -143,6 +149,7 @@ public class ContentSecurityPolicyFilter implements Filter {
     private String objectSrc;
     private String mediaSrc;
     private String frameSrc;
+    private String frameAnchestors;
 
     public void init(FilterConfig filterConfig) {
         reportOnly = getParameterBooleanValue(filterConfig, REPORT_ONLY);
@@ -157,6 +164,7 @@ public class ContentSecurityPolicyFilter implements Filter {
         objectSrc = getParameterValue(filterConfig, OBJECT_SRC);
         mediaSrc = getParameterValue(filterConfig, MEDIA_SRC);
         frameSrc = getParameterValue(filterConfig, FRAME_SRC);
+        frameAnchestors = getParameterValue(filterConfig, FRAME_ANCESTORS);
     }
 
     private String getParameterValue(FilterConfig filterConfig, String paramName, String defaultValue) {
@@ -198,6 +206,7 @@ public class ContentSecurityPolicyFilter implements Filter {
         addDirectiveToContentSecurityPolicy(contentSecurityPolicy, MEDIA_SRC, mediaSrc);
         addDirectiveToContentSecurityPolicy(contentSecurityPolicy, FRAME_SRC, frameSrc);
         addDirectiveToContentSecurityPolicy(contentSecurityPolicy, REPORT_URI, reportUri);
+        addDirectiveToContentSecurityPolicy(contentSecurityPolicy, FRAME_ANCESTORS, frameAnchestors);
         addSandoxDirectiveToContentSecurityPolicy(contentSecurityPolicy, sandbox);
 
         return contentSecurityPolicy.toString();
